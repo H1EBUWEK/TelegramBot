@@ -12,7 +12,7 @@ public class SqlConnection {
             try(Connection conn = DriverManager.getConnection(url, user, password)){
             }
         } catch (Exception e){
-            System.out.println(e);
+            System.out.println("Sql Connection problem: " + e);
         }
     }
 }
