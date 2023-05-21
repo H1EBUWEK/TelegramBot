@@ -1,5 +1,6 @@
-package org.klimenko;
+package org.klimenko.controller.commands;
 
+import org.klimenko.service.Calculus;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;

@@ -1,18 +1,25 @@
-package org.klimenko;
+package org.klimenko.controller;
 
+import org.klimenko.controller.commands.Help;
+import org.klimenko.controller.commands.NewUser;
+import org.klimenko.controller.commands.YouOweMe;
+import org.klimenko.controller.commands.YouPaidMe;
+import org.klimenko.controller.commands.IOweYou;
+import org.klimenko.controller.commands.IPaidYou;
+import org.klimenko.controller.commands.MyBalance;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-import static org.klimenko.BotConfig.BOT_NAME;
-import static org.klimenko.BotConfig.BOT_TOKEN;
+import static org.klimenko.controller.BotConfig.BOT_NAME;
+import static org.klimenko.controller.BotConfig.BOT_TOKEN;
 
 
 public class MyBot extends TelegramLongPollingCommandBot {
 
-    MyBot(){
+    public MyBot(){
         register(new IOweYou());
         register(new YouOweMe());
         register(new MyBalance());

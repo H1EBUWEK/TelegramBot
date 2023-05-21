@@ -12,18 +12,18 @@ import static org.klimenko.SqlProperties.*;
 public class DAO {
     public static boolean CheckTinId(long id) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         String sqlSelect = "SELECT id FROM tin";
-        List<Integer> customerId = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             try (Statement statement = conn.createStatement()) {
                 try (ResultSet rs = statement.executeQuery(sqlSelect)) {
                     while (rs.next()) {
-                        customerId.add(rs.getInt(1));
+                        if (rs.getLong(1) == id)
+                            return true;
                     }
                 }
             }
         }
-        return customerId.contains(id);
+        return false;
     }
     public static boolean CheckTinUsername(String name) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         String sqlSelect = "SELECT name FROM tin";
