@@ -1,6 +1,7 @@
-package org.klimenko;
+package org.klimenko.controller.commands;
 
 
+import org.klimenko.DAO;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
@@ -24,8 +25,7 @@ public class NewUser extends BotCommand{
             if (!DAO.CheckTinId(id)) {
                 DAO.AddToTin(id,username);
             }
-        } catch (SQLException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
-                 InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

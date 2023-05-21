@@ -1,4 +1,7 @@
-package org.klimenko;
+package org.klimenko.service;
+
+import org.klimenko.DAO;
+import org.klimenko.Person;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
