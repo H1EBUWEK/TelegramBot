@@ -6,6 +6,10 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+
 public class IPaidYou extends BotCommand {
     public IPaidYou() {
         super("ipaidyou", "I paid my debts");
@@ -14,11 +18,11 @@ public class IPaidYou extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String creditor;
-        double money;
+        BigDecimal money;
         String debtor = user.getUserName();
         try {
             creditor = (String) Parser.ParsingMoney(strings).get("name");
-            money = (double) Parser.ParsingMoney(strings).get("amount");
+            money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
         } catch (WrongFormatException e) {
             // send a message of failure and return
             SendMessage sendMessage = new SendMessage();
@@ -29,6 +33,11 @@ public class IPaidYou extends BotCommand {
         System.out.println(debtor);
         System.out.println(money);
 
-        Calculus.Transactions(debtor, creditor, money);
+        try {
+            Calculus.Transactions(debtor, creditor, money);
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
+                 InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

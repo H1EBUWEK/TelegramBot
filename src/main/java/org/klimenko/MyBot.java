@@ -18,6 +18,7 @@ public class MyBot extends TelegramLongPollingCommandBot {
         register(new MyBalance());
         register(new IPaidYou());
         register(new YouPaidMe());
+        register(new NewUser());
         Help help = new Help(this);
         register(help);
 
