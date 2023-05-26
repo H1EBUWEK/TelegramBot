@@ -37,7 +37,7 @@ public class IPaidYou extends BotCommand {
         System.out.println(money);
 
         try {
-            Calculus.Transactions(debtor, creditor, money);
+            Calculus.TransactionsPlus(debtor, creditor, money);
         } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
                  InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
