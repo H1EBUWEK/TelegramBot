@@ -41,9 +41,14 @@ public class Calculus {
             if(DAO.CheckDebtLineStraight(creditor, debtor)) {
                 DAO.ChangeCreditLine(debtor, creditor, oldMoney.add(money));
             } else {
-                if(oldMoney.compareTo(money) >= 0) {
-                    DAO.ChangeCreditLine(debtor, creditor, oldMoney.subtract(money));
-                } else{
+                if(oldMoney.compareTo(money) > 0) {
+                    DAO.ChangeCreditLine(creditor, debtor, oldMoney.subtract(money));
+                }
+                if (oldMoney.compareTo(money) == 0){
+                    DAO.DeleteCreditline(creditor, debtor);
+                    DAO.DeleteCreditline(debtor, creditor);
+                }
+                if(oldMoney.compareTo(money) < 0){
                     BigDecimal newMoney = money.subtract(oldMoney);
                     DAO.DeleteCreditline(creditor, debtor);
                     DAO.DeleteCreditline(debtor, creditor);
@@ -52,6 +57,8 @@ public class Calculus {
             }
         }
     }
+
+
     public static void TransactionsMinus(String debtor, String creditor, BigDecimal money) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if (!DAO.CheckDebtLine(debtor, creditor)) {
             DAO.AddCreditLine(debtor, creditor, money);
