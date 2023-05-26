@@ -66,7 +66,7 @@ public class DAO {
             try (Statement statement = conn.createStatement()) {
                 try (ResultSet rs = statement.executeQuery(sqlSelect)) {
                     while (rs.next()) {
-                        Person person = new Person(rs.getString(2), rs.getString(1), rs.getDouble(3));
+                        Person person = new Person(rs.getString(2), rs.getString(1), rs.getBigDecimal(3));
                         personList.add(person);
                         if (person.creditor.equals(creditor) && person.debtor.equals(debtor) || person.creditor.equals(debtor) && person.debtor.equals(creditor)) {
                             return true;
@@ -86,7 +86,7 @@ public class DAO {
             try (Statement statement = conn.createStatement()) {
                 try (ResultSet rs = statement.executeQuery(sqlSelect)) {
                     while (rs.next()) {
-                        Person person = new Person(rs.getString(2), rs.getString(1), rs.getDouble(3));
+                        Person person = new Person(rs.getString(2), rs.getString(1), rs.getBigDecimal(3));
                         personList.add(person);
                         if (person.creditor.equals(creditor) && person.debtor.equals(debtor)) {
                             return true;
@@ -185,16 +185,16 @@ public class DAO {
     }
 
     public static List<Person> BalanceTelegramCalculation(String creditor) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
-        String sqlSelect = "SELECT * sum FROM telegramCalculation";
-        List<Person> balanceList = null;
+        String sqlSelect = "SELECT * FROM telegramCalculation";
+        List<Person> balanceList = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 
             try (Statement statement = conn.createStatement()) {
                 try (ResultSet rs = statement.executeQuery(sqlSelect)) {
                     while (rs.next()) {
-                        Person person = new Person(rs.getString(2), rs.getString(1), rs.getDouble(3));
-                        if (person.creditor.equals(creditor) && person.debtor.equals(creditor)) {
+                        Person person = new Person(rs.getString(2), rs.getString(1), rs.getBigDecimal(3));
+                        if (person.creditor.equals(creditor) || person.debtor.equals(creditor)) {
                             balanceList.add(person);
                         }
                     }

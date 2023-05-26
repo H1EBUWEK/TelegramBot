@@ -76,42 +76,17 @@ public class Calculus {
             }
         }
     }
-//        Person person = new Person(debtor, creditor, money);
-//        if (!personList.isEmpty()) {
-//            for (Person personal : personList) {
-//                if (personal.debtor.equals(debtor) && personal.creditor.equals(creditor) || personal.debtor.equals(creditor) && personal.creditor.equals(debtor)) {
-//                    //some methods changing money
-//                    if (personal.debtor.equals(debtor)) {
-//                        personal.money += money;
-//                    }
-//                    if (personal.debtor.equals(creditor)) {
-//                        personal.money -= money;
-//                        if (personal.money < 0) {
-//                            String temp = personal.debtor;
-//                            personal.debtor = personal.creditor;
-//                            personal.creditor = temp;
-//                            personal.money *= -1;
-//                        }
-//                    }
-//                }
-//                else {
-//                    personList.add(person);
-//                }
-//            }
-//
-//        } else {
-//            personList.add(person);
-//        }
+
     public static List<String> Balance(String username) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List <Person> myBalance = DAO.BalanceTelegramCalculation(username);
         List<String> allBalance = new ArrayList<>();
         String balance = " ";
         for (Person person : myBalance) {
             if (username.equals(person.debtor)) {
-                balance = String.format("%s ows me %.2f", person.creditor, person.money);
+                balance = String.format("%s ows you %.2f", person.creditor, person.money);
             }
             if (username.equals(person.creditor)) {
-                balance = String.format("I owe %s %.2f", person.debtor, person.money);
+                balance = String.format("You owe %s %.2f", person.debtor, person.money);
             }
             allBalance.add(balance);
         }

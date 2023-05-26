@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 public class Person {
     public String debtor;
     public String creditor;
-    public Double money;
+    public BigDecimal money;
 
-    public Person(String debtor, String creditor, Double money){
+    public Person(String debtor, String creditor, BigDecimal money){
         this.debtor = debtor;
         this.creditor = creditor;
         this.money = money;
