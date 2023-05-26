@@ -1,4 +1,4 @@
-package org.klimenko;
+package org.klimenko.controller;
 
 public class BotConfig {
     public static final String BOT_NAME = "CalculationDebt";

@@ -1,4 +1,4 @@
-package org.klimenko;
+package org.klimenko.controller.commands;
 
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
