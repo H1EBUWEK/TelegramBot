@@ -1,5 +1,6 @@
 package org.klimenko.controller.commands;
 
+import org.klimenko.DAO;
 import org.klimenko.service.Calculus;
 import org.klimenko.Parser;
 import org.klimenko.WrongFormatException;
@@ -27,17 +28,36 @@ public class IPaidYou extends BotCommand {
             creditor = (String) Parser.ParsingMoney(strings).get("name");
             money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
         } catch (WrongFormatException e) {
-            // send a message of failure and return
-            SendMessage sendMessage = new SendMessage();
-            return;
+            throw new RuntimeException(e);
         }
 
-        System.out.println(creditor);
-        System.out.println(debtor);
-        System.out.println(money);
-
         try {
-            Calculus.TransactionsPlus(debtor, creditor, money);
+            if(!creditor.equals(debtor)) {
+                if (DAO.CheckTinId(user.getId())) {
+                    if (DAO.CheckTinUsername(debtor)) {
+                        try {
+                            Calculus.AddDebt(debtor, creditor, money);
+                        } catch (SQLException | ClassNotFoundException | InvocationTargetException |
+                                 NoSuchMethodException |
+                                 InstantiationException | IllegalAccessException e) {
+                            System.out.println(e);
+                        }
+                    } else {
+                        //вывести что пользователя нет в базе. попросите его зарегестрироваться
+                    }
+                } else {
+                    DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
+                    if (DAO.CheckTinUsername(debtor)) {
+                        try {
+                            Calculus.AddDebt(debtor, creditor, money);
+                        } catch (SQLException | ClassNotFoundException | InvocationTargetException |
+                                 NoSuchMethodException |
+                                 InstantiationException | IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
         } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
                  InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
