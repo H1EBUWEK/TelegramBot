@@ -41,18 +41,20 @@ public class Calculus {
             if(DAO.CheckDebtLineStraight(creditor, debtor)) {
                 DAO.ChangeCreditLine(debtor, creditor, oldMoney.add(money));
             } else {
-                if(oldMoney.compareTo(money) > 0) {
-                    DAO.ChangeCreditLine(creditor, debtor, oldMoney.subtract(money));
-                }
-                if (oldMoney.compareTo(money) == 0){
-                    DAO.DeleteCreditline(creditor, debtor);
-                    DAO.DeleteCreditline(debtor, creditor);
-                }
-                if(oldMoney.compareTo(money) < 0){
-                    BigDecimal newMoney = money.subtract(oldMoney);
-                    DAO.DeleteCreditline(creditor, debtor);
-                    DAO.DeleteCreditline(debtor, creditor);
-                    DAO.AddReverseToTelegramCalculation(newMoney, debtor, creditor);
+                switch (oldMoney.compareTo(money)){
+                    case 1:
+                        DAO.ChangeCreditLine(creditor, debtor, oldMoney.subtract(money));
+                        break;
+                    case 0:
+                        DAO.DeleteCreditline(creditor, debtor);
+                        DAO.DeleteCreditline(debtor, creditor);
+                        break;
+                    case -1:
+                        BigDecimal newMoney = money.subtract(oldMoney);
+                        DAO.DeleteCreditline(creditor, debtor);
+                        DAO.DeleteCreditline(debtor, creditor);
+                        DAO.AddReverseToTelegramCalculation(newMoney, debtor, creditor);
+                        break;
                 }
             }
         }
