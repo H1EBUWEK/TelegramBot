@@ -6,9 +6,12 @@ import org.klimenko.DAO;
 import org.klimenko.Parser;
 import org.klimenko.WrongFormatException;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -23,7 +26,6 @@ public class IOweYou extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-
         String creditor = user.getUserName();
         String debtor;
         BigDecimal money;
@@ -66,4 +68,24 @@ public class IOweYou extends BotCommand {
             throw new RuntimeException(e);
         }
     }
+
+    // Call this method from public void execute(... in order to see what it does
+    private boolean isUserInChat(AbsSender absSender, long chatId, long userId) throws TelegramApiException {
+        GetChatMember getChatMember = new GetChatMember();
+        getChatMember.setChatId(chatId);
+        getChatMember.setUserId(userId);
+        ChatMember chatMember = null;
+        try {
+            chatMember = absSender.execute(getChatMember);
+        } catch (Exception e) {
+            System.err.println(e.toString());
+            throw e;
+        }
+
+        System.out.println(chatMember.getUser());
+        System.out.println(chatMember.getStatus());
+        return chatMember.getStatus() != null;
+    }
+
+
 }
