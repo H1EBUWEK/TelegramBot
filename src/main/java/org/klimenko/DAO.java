@@ -58,8 +58,8 @@ public class DAO {
         }
     }
 
-    public static boolean CheckDebtLine(String creditor, String debtor) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
-        String sqlSelect = "SELECT creditor, debtor, sum FROM telegramCalculation";
+    public static boolean CheckDebtLine(String creditor, String debtor, String chatId) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
+        String sqlSelect = "SELECT creditor, debtor, sum FROM " + chatId;
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 
@@ -78,8 +78,8 @@ public class DAO {
         return false;
     }
 
-    public static boolean CheckDebtLineStraight (String creditor, String debtor) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
-        String sqlSelect = "SELECT creditor, debtor, sum FROM telegramCalculation";
+    public static boolean CheckDebtLineStraight (String creditor, String debtor, String chatId) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
+        String sqlSelect = "SELECT creditor, debtor, sum FROM " + chatId;
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 
@@ -98,8 +98,8 @@ public class DAO {
         return false;
     }
 
-    public static synchronized void AddCreditLine(String debtor, String creditor, BigDecimal money) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String sqlAdd = "INSERT INTO telegramCalculation (creditor, debtor, sum) " + "VALUES (?, ?, ?)";
+    public static synchronized void AddCreditLine(String debtor, String creditor, BigDecimal money, String chatId) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String sqlAdd = "INSERT INTO " + chatId + " (creditor, debtor, sum) " + "VALUES (?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 
@@ -112,8 +112,8 @@ public class DAO {
         }
     }
 
-    public static synchronized void ChangeCreditLine(String debtor, String creditor, BigDecimal sum) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String sqlSumUpdate = "UPDATE telegramCalculation SET sum = ? WHERE creditor = ? AND debtor = ?";
+    public static synchronized void ChangeCreditLine(String debtor, String creditor, BigDecimal sum, String chatId) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String sqlSumUpdate = "UPDATE " + chatId + " SET sum = ? WHERE creditor = ? AND debtor = ?";
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 
@@ -126,8 +126,8 @@ public class DAO {
         }
     }
 
-    public static void DeleteCreditline(String creditor, String debtor) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String sqlDelete = "DELETE FROM telegramCalculation WHERE creditor = ? AND debtor = ?";
+    public static void DeleteCreditline(String creditor, String debtor, String chatId) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String sqlDelete = "DELETE FROM " + chatId + " WHERE creditor = ? AND debtor = ?";
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             try (PreparedStatement preparedstatement = conn.prepareStatement(sqlDelete)) {
@@ -138,8 +138,8 @@ public class DAO {
         }
     }
 
-    public static synchronized void AddToTelegramCalculation(BigDecimal sum, String creditor, String debtor) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String sqlInsert = "INSERT INTO telegramCalculation (creditor, debtor, sum) VALUES (?, ?, ?)";
+    public static synchronized void AddToTelegramCalculation(BigDecimal sum, String creditor, String debtor, String chatId) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String sqlInsert = "INSERT INTO " + chatId + " (creditor, debtor, sum) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -152,8 +152,8 @@ public class DAO {
         }
     }
 
-    public static synchronized void AddReverseToTelegramCalculation(BigDecimal sum, String creditor, String debtor) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String sqlInsert = "INSERT INTO telegramCalculation (creditor, debtor, sum) VALUES (?, ?, ?)";
+    public static synchronized void AddReverseToTelegramCalculation(BigDecimal sum, String creditor, String debtor, String chatId) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String sqlInsert = "INSERT INTO " + chatId + " (creditor, debtor, sum) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -166,9 +166,9 @@ public class DAO {
         }
     }
 
-    public static BigDecimal getDebtBalance(String debtor, String creditor) throws SQLException {
+    public static BigDecimal getDebtBalance(String debtor, String creditor, String chatId) throws SQLException {
         BigDecimal balance = null;
-        String sqlGetSum = "SELECT SUM FROM telegramCalculation WHERE creditor = ? AND debtor = ?";
+        String sqlGetSum = "SELECT SUM FROM " +chatId + " WHERE creditor = ? AND debtor = ?";
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             try (PreparedStatement preparedstatement = conn.prepareStatement(sqlGetSum)) {
 
@@ -184,8 +184,61 @@ public class DAO {
         return balance;
     }
 
-    public static List<Person> BalanceTelegramCalculation(String creditor) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
-        String sqlSelect = "SELECT * FROM telegramCalculation";
+    public static boolean TableListContains (String tablename) throws SQLException {
+        boolean isInTables = false;
+        String sqlSelect = "show tables";
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
+                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()){
+                        System.out.println(resultSet.getString(1));
+                        System.out.println("1" + isInTables);
+                        if(resultSet.getString(1).equals(tablename)){
+                            isInTables = true;
+                            System.out.println("2" + isInTables);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("3" + isInTables);
+        return isInTables;
+    }
+
+    public static void CreateTable (String chatId) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        String sqlCreateTable = "CREATE TABLE " + chatId + " LIKE telegramCalculation";
+        try(Connection connection = DriverManager.getConnection(url, user, password)){
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            try(Statement Statement = connection.prepareStatement(sqlCreateTable)) {
+                Statement.execute(sqlCreateTable);
+            } catch (Exception e){
+                System.out.println(e);
+            }
+        }
+    }
+
+    public static long GetUserId (String username) throws SQLException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        long id = 1;
+        String sqlGetId = "Select * FROM tin";
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+
+            try (Statement statement = conn.createStatement()) {
+                try (ResultSet rs = statement.executeQuery(sqlGetId)) {
+                    while (rs.next()) {
+                        if(rs.getString(2).equals(username)) {
+                            id = rs.getLong(1);
+                        }
+                    }
+                }
+            }
+        }
+        return id;
+    }
+
+
+    public static List<Person> BalanceTelegramCalculation(String creditor, String chatId) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
+        String sqlSelect = "SELECT * FROM " + chatId;
         List<Person> balanceList = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -198,10 +251,10 @@ public class DAO {
                             balanceList.add(person);
                         }
                     }
-                    //Start here;
                 }
             }
         }
         return balanceList;
     }
+
 }
