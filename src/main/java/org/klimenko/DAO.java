@@ -191,17 +191,13 @@ public class DAO {
             try(PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
                 try(ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()){
-                        System.out.println(resultSet.getString(1));
-                        System.out.println("1" + isInTables);
                         if(resultSet.getString(1).equals(tablename)){
                             isInTables = true;
-                            System.out.println("2" + isInTables);
                         }
                     }
                 }
             }
         }
-        System.out.println("3" + isInTables);
         return isInTables;
     }
 
