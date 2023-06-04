@@ -23,8 +23,9 @@ public class MyBalance extends BotCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String username = user.getUserName();
         List<String> balance;
+        String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
         try {
-            balance = Calculus.Balance(username);
+            balance = Calculus.Balance(username, chatid);
         } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
                  InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);

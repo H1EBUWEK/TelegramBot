@@ -12,48 +12,30 @@ import java.util.List;
 
 public class Calculus {
 
-    public static void TransactionsPlus(String debtor, String creditor, BigDecimal money) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        if (!DAO.CheckDebtLine(debtor, creditor)) {
-            DAO.AddCreditLine(debtor, creditor, money);
-        } else {
-            BigDecimal oldMoney = DAO.getDebtBalance(debtor, creditor);
-            System.out.println(oldMoney);
-            if (oldMoney.compareTo(money) >= 0) {
-                System.out.println(oldMoney.subtract(money));
-                DAO.ChangeCreditLine(debtor, creditor, oldMoney.subtract(money));
-            }
-            if (oldMoney.compareTo(money) < 0) {
-                BigDecimal newMoney = money.subtract(oldMoney);
-                DAO.DeleteCreditline(creditor, debtor);
-                DAO.DeleteCreditline(debtor, creditor);
-                DAO.AddToTelegramCalculation(newMoney, debtor, creditor);
-            }
-        }
-    }
-    public static void AddDebt(String debtor, String creditor, BigDecimal money) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        if (!DAO.CheckDebtLine(debtor, creditor)) {
-            DAO.AddCreditLine(debtor, creditor, money);
+    public static void AddDebt(String debtor, String creditor, BigDecimal money, String chatId) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if (!DAO.CheckDebtLine(debtor, creditor, chatId)) {
+            DAO.AddCreditLine(debtor, creditor, money, chatId);
         }else {
-            BigDecimal oldMoney = DAO.getDebtBalance(debtor, creditor);
+            BigDecimal oldMoney = DAO.getDebtBalance(debtor, creditor, chatId);
             if (oldMoney == null){
-                oldMoney = DAO.getDebtBalance(creditor, debtor);
+                oldMoney = DAO.getDebtBalance(creditor, debtor, chatId);
             }
-            if(DAO.CheckDebtLineStraight(creditor, debtor)) {
-                DAO.ChangeCreditLine(debtor, creditor, oldMoney.add(money));
+            if(DAO.CheckDebtLineStraight(creditor, debtor, chatId)) {
+                DAO.ChangeCreditLine(debtor, creditor, oldMoney.add(money), chatId);
             } else {
                 switch (oldMoney.compareTo(money)){
                     case 1:
-                        DAO.ChangeCreditLine(creditor, debtor, oldMoney.subtract(money));
+                        DAO.ChangeCreditLine(creditor, debtor, oldMoney.subtract(money), chatId);
                         break;
                     case 0:
-                        DAO.DeleteCreditline(creditor, debtor);
-                        DAO.DeleteCreditline(debtor, creditor);
+                        DAO.DeleteCreditline(creditor, debtor, chatId);
+                        DAO.DeleteCreditline(debtor, creditor, chatId);
                         break;
                     case -1:
                         BigDecimal newMoney = money.subtract(oldMoney);
-                        DAO.DeleteCreditline(creditor, debtor);
-                        DAO.DeleteCreditline(debtor, creditor);
-                        DAO.AddReverseToTelegramCalculation(newMoney, debtor, creditor);
+                        DAO.DeleteCreditline(creditor, debtor, chatId);
+                        DAO.DeleteCreditline(debtor, creditor, chatId);
+                        DAO.AddReverseToTelegramCalculation(newMoney, debtor, creditor, chatId);
                         break;
                 }
             }
@@ -61,26 +43,8 @@ public class Calculus {
     }
 
 
-    public static void TransactionsMinus(String debtor, String creditor, BigDecimal money) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        if (!DAO.CheckDebtLine(debtor, creditor)) {
-            DAO.AddCreditLine(debtor, creditor, money);
-        } else {
-            BigDecimal oldMoney = DAO.getDebtBalance(debtor, creditor);
-            System.out.println(oldMoney);
-            if (oldMoney.compareTo(money) >= 0) {
-                System.out.println(oldMoney.subtract(money));
-                DAO.ChangeCreditLine(debtor, creditor, oldMoney.subtract(money));
-            }
-            if (oldMoney.compareTo(money) < 0) {
-                BigDecimal newMoney = money.subtract(oldMoney);
-                DAO.DeleteCreditline(creditor, debtor);
-                DAO.AddToTelegramCalculation(newMoney, creditor, debtor);
-            }
-        }
-    }
-
-    public static List<String> Balance(String username) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        List <Person> myBalance = DAO.BalanceTelegramCalculation(username);
+    public static List<String> Balance(String username, String chatId) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List <Person> myBalance = DAO.BalanceTelegramCalculation(username, chatId);
         List<String> allBalance = new ArrayList<>();
         String balance = " ";
         for (Person person : myBalance) {
