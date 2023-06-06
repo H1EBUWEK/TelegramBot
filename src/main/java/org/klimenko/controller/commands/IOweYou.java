@@ -112,10 +112,6 @@ public class IOweYou extends BotCommand {
         } catch (Exception e) {
             return false;
         }
-
-
-        System.out.println(chatMember.getUser());
-        System.out.println(chatMember.getStatus());
         return  chatMember.getStatus().equals("member");
     }
 }
