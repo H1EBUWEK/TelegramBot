@@ -27,10 +27,13 @@ public class IOweYou extends BotCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
+
+
         String creditor = user.getUserName();
         String debtor;
         BigDecimal money;
         String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
+
         try {
             debtor = (String) Parser.ParsingMoney(strings).get("name");
             money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
@@ -71,7 +74,7 @@ public class IOweYou extends BotCommand {
                             DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
                             if (DAO.CheckTinUsername(debtor)) {
                                 try {
-                                    Calculus.AddDebt(debtor, creditor, money, String.valueOf(chat.getId()));
+                                    Calculus.AddDebt(debtor, creditor, money, chatid);
                                 } catch (SQLException | ClassNotFoundException | InvocationTargetException |
                                          NoSuchMethodException |
                                          InstantiationException | IllegalAccessException e) {
@@ -109,7 +112,6 @@ public class IOweYou extends BotCommand {
         ChatMember chatMember;
         try {
             chatMember = absSender.execute(getChatMember);
-            System.out.println(chatMember.getStatus());
         } catch (Exception e) {
             return false;
         }
