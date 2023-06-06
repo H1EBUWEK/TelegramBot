@@ -35,7 +35,7 @@ public class Calculus {
                         BigDecimal newMoney = money.subtract(oldMoney);
                         DAO.DeleteCreditline(creditor, debtor, chatId);
                         DAO.DeleteCreditline(debtor, creditor, chatId);
-                        DAO.AddReverseToTelegramCalculation(newMoney, debtor, creditor, chatId);
+                        DAO.AddDebtLine(newMoney, debtor, creditor, chatId);
                         break;
                 }
             }
@@ -44,7 +44,7 @@ public class Calculus {
 
 
     public static List<String> Balance(String username, String chatId) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        List <Person> myBalance = DAO.BalanceTelegramCalculation(username, chatId);
+        List <Person> myBalance = DAO.Balance(username, chatId);
         List<String> allBalance = new ArrayList<>();
         String balance = " ";
         for (Person person : myBalance) {
