@@ -111,6 +111,6 @@ public class YouPaidMe extends BotCommand {
         } catch (Exception e) {
             return false;
         }
-        return chatMember.getStatus().equals("member");
+        return chatMember.getStatus().equals("member") || chatMember.getStatus().equals("creator") || chatMember.getStatus().equals("administrator") || chatMember.getStatus().equals("restricted");
     }
 }

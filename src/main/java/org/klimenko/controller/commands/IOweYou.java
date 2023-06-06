@@ -42,7 +42,6 @@ public class IOweYou extends BotCommand {
             if (isUserInChat(absSender, chat.getId(), DAO.GetUserId(debtor))) {
                 if (!DAO.TableListContains(chatid)) {
                     DAO.CreateTable(chatid);
-                }
                 if (!creditor.equals(debtor)) {
                     if (DAO.CheckTinId(user.getId())) {
                         if (DAO.CheckTinUsername(debtor)) {
@@ -79,6 +78,7 @@ public class IOweYou extends BotCommand {
                             }
                         }
                     }
+                }
                 }
             } else {
                 //вывести что пользователя нет в базе. попросите его зарегестрироваться
