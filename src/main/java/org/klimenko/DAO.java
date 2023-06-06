@@ -176,7 +176,7 @@ public class DAO {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             try(PreparedStatement preparedStatement = connection.prepareStatement(sqlSelect)) {
                 try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()){
+                    while (resultSet.next()){
                         if(resultSet.getString(1).equals(tablename)){
                             isInTables = true;
                         }
