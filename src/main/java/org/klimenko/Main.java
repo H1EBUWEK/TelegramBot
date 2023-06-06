@@ -14,8 +14,6 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        BotConfig.GetBotConfig();
-
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot(new MyBot());
