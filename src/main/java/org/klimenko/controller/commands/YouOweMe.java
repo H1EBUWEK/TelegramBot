@@ -42,41 +42,40 @@ public class YouOweMe extends BotCommand {
             if (isUserInChat(absSender, chat.getId(), DAO.GetUserId(creditor))) {
                 if (!DAO.TableListContains(chatid)) {
                     DAO.CreateTable(chatid);
-                } else {
-                    if (!creditor.equals(debtor)) {
-                        if (DAO.CheckTinId(user.getId())) {
-                            if (DAO.CheckTinUsername(debtor)) {
-                                try {
-                                    Calculus.AddDebt(debtor, creditor, money, chatid);
-                                } catch (SQLException | ClassNotFoundException | InvocationTargetException |
-                                         NoSuchMethodException |
-                                         InstantiationException | IllegalAccessException e) {
-                                    System.out.println(e);
-                                }
-                            } else {
-                                //вывести что пользователя нет в базе. попросите его зарегестрироваться
-                                StringBuilder UserNotRegistred = new StringBuilder();
-                                UserNotRegistred.append("There is no such registered user as " + creditor + " in system\n\n");
-                                SendMessage noUserInChatMessage = new SendMessage();
-                                noUserInChatMessage.setChatId(chat.getId().toString());
-                                noUserInChatMessage.setText(UserNotRegistred.toString());
-
-                                try {
-                                    absSender.execute(noUserInChatMessage);
-                                } catch (TelegramApiException e) {
-                                    System.out.println(e);
-                                }
+                }
+                if (!creditor.equals(debtor)) {
+                    if (DAO.CheckTinId(user.getId())) {
+                        if (DAO.CheckTinUsername(debtor)) {
+                            try {
+                                Calculus.AddDebt(debtor, creditor, money, chatid);
+                            } catch (SQLException | ClassNotFoundException | InvocationTargetException |
+                                     NoSuchMethodException |
+                                     InstantiationException | IllegalAccessException e) {
+                                System.out.println(e);
                             }
                         } else {
-                            DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
-                            if (DAO.CheckTinUsername(debtor)) {
-                                try {
-                                    Calculus.AddDebt(debtor, creditor, money, chatid);
-                                } catch (SQLException | ClassNotFoundException | InvocationTargetException |
-                                         NoSuchMethodException |
-                                         InstantiationException | IllegalAccessException e) {
-                                    throw new RuntimeException(e);
-                                }
+                            //вывести что пользователя нет в базе. попросите его зарегестрироваться
+                            StringBuilder UserNotRegistred = new StringBuilder();
+                            UserNotRegistred.append("There is no such registered user as " + creditor + " in system\n\n");
+                            SendMessage noUserInChatMessage = new SendMessage();
+                            noUserInChatMessage.setChatId(chat.getId().toString());
+                            noUserInChatMessage.setText(UserNotRegistred.toString());
+
+                            try {
+                                absSender.execute(noUserInChatMessage);
+                            } catch (TelegramApiException e) {
+                                System.out.println(e);
+                            }
+                        }
+                    } else {
+                        DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
+                        if (DAO.CheckTinUsername(debtor)) {
+                            try {
+                                Calculus.AddDebt(debtor, creditor, money, chatid);
+                            } catch (SQLException | ClassNotFoundException | InvocationTargetException |
+                                     NoSuchMethodException |
+                                     InstantiationException | IllegalAccessException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                     }

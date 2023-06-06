@@ -30,7 +30,7 @@ public class IOweYou extends BotCommand {
         String creditor = user.getUserName();
         String debtor;
         BigDecimal money;
-        String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m"+chat.getId()*(-1));
+        String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
         try {
             debtor = (String) Parser.ParsingMoney(strings).get("name");
             money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
@@ -42,41 +42,40 @@ public class IOweYou extends BotCommand {
             if (isUserInChat(absSender, chat.getId(), DAO.GetUserId(debtor))) {
                 if (!DAO.TableListContains(chatid)) {
                     DAO.CreateTable(chatid);
-                } else {
-                    if (!creditor.equals(debtor)) {
-                        if (DAO.CheckTinId(user.getId())) {
-                            if (DAO.CheckTinUsername(debtor)) {
-                                try {
-                                    Calculus.AddDebt(debtor, creditor, money, chatid);
-                                } catch (SQLException | ClassNotFoundException | InvocationTargetException |
-                                         NoSuchMethodException |
-                                         InstantiationException | IllegalAccessException e) {
-                                    System.out.println(e);
-                                }
-                            } else {
-                                //вывести что пользователя нет в базе. попросите его зарегестрироваться
-                                StringBuilder UserNotRegistred = new StringBuilder();
-                                UserNotRegistred.append("There is no such user as " + debtor + " in chat\n\n");
-                                SendMessage noUserInChatMessage = new SendMessage();
-                                noUserInChatMessage.setChatId(chat.getId().toString());
-                                noUserInChatMessage.setText(UserNotRegistred.toString());
-
-                                try {
-                                    absSender.execute(noUserInChatMessage);
-                                } catch (TelegramApiException e) {
-                                    System.out.println(e);
-                                }
+                }
+                if (!creditor.equals(debtor)) {
+                    if (DAO.CheckTinId(user.getId())) {
+                        if (DAO.CheckTinUsername(debtor)) {
+                            try {
+                                Calculus.AddDebt(debtor, creditor, money, chatid);
+                            } catch (SQLException | ClassNotFoundException | InvocationTargetException |
+                                     NoSuchMethodException |
+                                     InstantiationException | IllegalAccessException e) {
+                                System.out.println(e);
                             }
                         } else {
-                            DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
-                            if (DAO.CheckTinUsername(debtor)) {
-                                try {
-                                    Calculus.AddDebt(debtor, creditor, money, String.valueOf(chat.getId()));
-                                } catch (SQLException | ClassNotFoundException | InvocationTargetException |
-                                         NoSuchMethodException |
-                                         InstantiationException | IllegalAccessException e) {
-                                    throw new RuntimeException(e);
-                                }
+                            //вывести что пользователя нет в базе. попросите его зарегестрироваться
+                            StringBuilder UserNotRegistred = new StringBuilder();
+                            UserNotRegistred.append("There is no such user as " + debtor + " in chat\n\n");
+                            SendMessage noUserInChatMessage = new SendMessage();
+                            noUserInChatMessage.setChatId(chat.getId().toString());
+                            noUserInChatMessage.setText(UserNotRegistred.toString());
+
+                            try {
+                                absSender.execute(noUserInChatMessage);
+                            } catch (TelegramApiException e) {
+                                System.out.println(e);
+                            }
+                        }
+                    } else {
+                        DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
+                        if (DAO.CheckTinUsername(debtor)) {
+                            try {
+                                Calculus.AddDebt(debtor, creditor, money, String.valueOf(chat.getId()));
+                            } catch (SQLException | ClassNotFoundException | InvocationTargetException |
+                                     NoSuchMethodException |
+                                     InstantiationException | IllegalAccessException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                     }
@@ -109,9 +108,10 @@ public class IOweYou extends BotCommand {
         ChatMember chatMember;
         try {
             chatMember = absSender.execute(getChatMember);
+            System.out.println(chatMember.getStatus());
         } catch (Exception e) {
             return false;
         }
-        return  chatMember.getStatus().equals("member");
+        return chatMember.getStatus().equals("member") || chatMember.getStatus().equals("creator") || chatMember.getStatus().equals("administrator") || chatMember.getStatus().equals("restricted");
     }
 }
