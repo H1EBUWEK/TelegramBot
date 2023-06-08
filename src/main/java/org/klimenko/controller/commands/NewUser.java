@@ -7,8 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
 
 
 public class NewUser extends BotCommand{

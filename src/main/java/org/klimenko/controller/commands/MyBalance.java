@@ -16,7 +16,7 @@ import java.util.List;
 public class MyBalance extends BotCommand {
 
     public MyBalance() {
-        super("mybalance", "How much money I owe");
+        super("balance", "How much money I owe");
     }
 
     @Override
