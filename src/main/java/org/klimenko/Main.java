@@ -18,7 +18,8 @@ public class Main {
     public static Properties properties = new Properties();
 
     public static void main(String[] args) {
-        String filepath = "C:\\Users\\klimk\\Desktop\\Bot.config";
+
+        String filepath = properties.getProperty("BOT_CONF");
         try (FileInputStream fis = new FileInputStream(filepath)) {
             properties.load(fis);
         } catch (IOException e) {
