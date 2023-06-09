@@ -19,7 +19,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String filepath = properties.getProperty("BOT_CONF");
+        String filepath = System.getenv("BOT_CONF");
+        System.out.println("Properties path: " + filepath);
         try (FileInputStream fis = new FileInputStream(filepath)) {
             properties.load(fis);
         } catch (IOException e) {
