@@ -1,8 +1,8 @@
 package org.klimenko.controller;
 
-import java.util.Map;
+import static org.klimenko.Main.properties;
 
 public class BotConfig {
-    public final static String BOT_NAME = System.getenv("BOT_NAME");
-    public final static String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    public final static String BOT_NAME = properties.getProperty("BOT_NAME");
+    public final static String BOT_TOKEN = properties.getProperty("BOT_TOKEN");
 }
