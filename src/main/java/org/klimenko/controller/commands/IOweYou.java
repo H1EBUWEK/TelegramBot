@@ -30,16 +30,12 @@ public class IOweYou extends BotCommand {
         try {
             debtor = (String) Parser.ParsingMoney(strings).get("name");
             money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
-        } catch (Exception e) {
-            sendExceptionMessage(e, absSender, chat);
-            throw new RuntimeException(e);
-        }
-
-        try {
             Calculus.AddDebt(debtor, creditor, money, chat, user, absSender, controller);
         } catch (Exception e) {
             sendExceptionMessage(e, absSender, chat);
         }
+
+
     }
     private void sendExceptionMessage(Exception e, AbsSender absSender, Chat chat){
         String whatHappened = e.getMessage();
