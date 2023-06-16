@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class IOweYou extends BotCommand {
 
     public IOweYou() {
-        super("ioweyou", "I owe you money");
+        super("ioy", "I owe you money");
     }
 
     @Override

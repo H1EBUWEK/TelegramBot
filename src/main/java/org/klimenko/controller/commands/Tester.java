@@ -20,7 +20,7 @@ public class Tester {
         if (creditor.equals(debtor)) {
             throw new Exception("Debtor and creditor can't be the same person\nPlease, check the transaction\n\n");
         }
-        if (DAO.CheckTinId(user.getId())) {
+        if (!DAO.CheckTinId(user.getId())) {
             DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
         }
         if (!DAO.CheckTinUsername(debtor)) {
@@ -39,7 +39,7 @@ public class Tester {
         if (creditor.equals(debtor)) {
             throw new Exception("Debtor and creditor can't be the same person\nPlease, check the transaction\n\n");
         }
-        if (DAO.CheckTinId(user.getId())) {
+        if (!DAO.CheckTinId(user.getId())) {
             DAO.AddToTin(Math.toIntExact(user.getId()), user.getUserName());
         }
         if (!DAO.CheckTinUsername(creditor)) {
@@ -59,5 +59,14 @@ public class Tester {
             return false;
         }
         return chatMember.getStatus().equals("member") || chatMember.getStatus().equals("creator") || chatMember.getStatus().equals("administrator") || chatMember.getStatus().equals("restricted");
+    }
+    public static boolean balanceTesting(String tablename) throws Exception {
+        if(!DAO.isTableExists(tablename)){
+            throw new Exception("Yay! You got no debts in this chat!");
+        }
+        if(DAO.isTableEmpty(tablename)){
+            throw new Exception("Yay! No one got any debts in chat!");
+        }
+        return true;
     }
 }

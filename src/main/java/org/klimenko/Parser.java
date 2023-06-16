@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class Parser {
     public static Map<String, Object> ParsingMoney(String[] strings) throws Exception {
+        if(strings.length<2){
+            throw new Exception("To use this function you have to write command"+
+                    "+ sum + name");
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", " ");
         map.put("amount", " ");

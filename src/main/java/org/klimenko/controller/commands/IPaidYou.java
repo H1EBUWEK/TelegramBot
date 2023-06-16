@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 public class IPaidYou extends BotCommand {
     public IPaidYou() {
-        super("ipaidyou", "I paid my debts");
+        super("ipy", "I paid my debts");
     }
 
     @Override

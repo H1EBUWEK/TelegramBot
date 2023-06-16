@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 
 public class YouPaidMe extends BotCommand {
     public YouPaidMe() {
-        super("youpaidme", "You paid your debts");
+        super("ypm", "You paid your debts");
     }
 
     @Override

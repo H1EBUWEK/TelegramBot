@@ -64,10 +64,17 @@ public class Calculus {
     }
 
 
-    public static List<String> Balance(String username, String chatId) throws SQLException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static List<String> Balance(String username, String chatId, Chat chat) throws Exception {
+        String tablename = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
+        try{
+            Tester.balanceTesting(tablename);
+        }catch (Exception e){
+            throw e;
+        }
         List<Person> myBalance = DAO.Balance(username, chatId);
         List<String> allBalance = new ArrayList<>();
         String balance = " ";
+
         for (Person person : myBalance) {
             if (username.equals(person.debtor)) {
                 balance = String.format("%s ows you %.2f", person.creditor, person.money);
