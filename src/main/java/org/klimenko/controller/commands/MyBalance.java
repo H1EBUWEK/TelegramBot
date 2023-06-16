@@ -22,7 +22,7 @@ public class MyBalance extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String username = user.getUserName();
-        List<String> balances = null;
+        List<String> balances;
         String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
         try {
             balances = Calculus.Balance(username, chatid, chat);
