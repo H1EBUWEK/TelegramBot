@@ -239,7 +239,7 @@ public class DAO {
         return balanceList;
     }
 
-    public static boolean isTableExists(String tablename) throws Exception{
+    public static boolean doesTableExist(String tablename) throws Exception{
         String sqlIsTableExists = "show tables";
         try (Connection conn = DriverManager.getConnection(url, user, password)) {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();

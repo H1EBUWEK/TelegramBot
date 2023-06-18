@@ -9,8 +9,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class MyBalance extends BotCommand {
@@ -25,10 +23,10 @@ public class MyBalance extends BotCommand {
         List<String> balances;
         String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
         try {
-            balances = Calculus.Balance(username, chatid, chat);
+            balances = Calculus.getBalances(username, chatid, chat);
             for (String balance : balances) {
                 if (balances.isEmpty()) {
-                    balance = "YAY! You got no any debts!";
+                    balance = "YAY! You got no debts!";
                 }
                 SendMessage message = new SendMessage();
                 message.setChatId(chat.getId());

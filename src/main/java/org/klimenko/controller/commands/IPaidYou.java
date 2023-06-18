@@ -23,10 +23,11 @@ public class IPaidYou extends BotCommand {
         String creditor;
         BigDecimal money;
         String debtor = user.getUserName();
+        String command = "/ipy";
 
         try {
-            creditor = (String) Parser.ParsingMoney(strings).get("name");
-            money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
+            creditor = (String) Parser.ParsingMoney(strings, command).get("name");
+            money = (BigDecimal) Parser.ParsingMoney(strings, command).get("amount");
             Calculus.AddDebt(debtor, creditor, money, chat, user, absSender, controller);
         } catch (Exception e) {
             sendExceptionMessage(e, absSender, chat);

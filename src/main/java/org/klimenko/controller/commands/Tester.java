@@ -60,8 +60,8 @@ public class Tester {
         }
         return chatMember.getStatus().equals("member") || chatMember.getStatus().equals("creator") || chatMember.getStatus().equals("administrator") || chatMember.getStatus().equals("restricted");
     }
-    public static boolean balanceTesting(String tablename) throws Exception {
-        if(!DAO.isTableExists(tablename)){
+    public static boolean doesDebtExist(String tablename) throws Exception {
+        if(!DAO.doesTableExist(tablename)){
             throw new Exception("Yay! You got no debts in this chat!");
         }
         if(DAO.isTableEmpty(tablename)){

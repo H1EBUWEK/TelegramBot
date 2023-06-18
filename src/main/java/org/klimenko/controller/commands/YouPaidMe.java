@@ -24,10 +24,11 @@ public class YouPaidMe extends BotCommand {
         String creditor = user.getUserName();
         String debtor;
         BigDecimal money;
+        String command = "/ypm";
 
         try {
-            debtor = (String) Parser.ParsingMoney(strings).get("name");
-            money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
+            debtor = (String) Parser.ParsingMoney(strings, command).get("name");
+            money = (BigDecimal) Parser.ParsingMoney(strings, command).get("amount");
             Calculus.AddDebt(debtor, creditor, money, chat, user, absSender, controller);
         } catch (Exception e) {
             sendExceptionMessage(e, absSender, chat);
