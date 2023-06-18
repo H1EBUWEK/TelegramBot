@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class IOweYou extends BotCommand {
 
     public IOweYou() {
-        super("ioweyou", "I owe you money");
+        super("ioy", "I owe you money");
     }
 
     @Override
@@ -26,20 +26,17 @@ public class IOweYou extends BotCommand {
         String creditor = user.getUserName();
         String debtor;
         BigDecimal money;
+        String command = "/ioy";
 
         try {
-            debtor = (String) Parser.ParsingMoney(strings).get("name");
-            money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
-        } catch (Exception e) {
-            sendExceptionMessage(e, absSender, chat);
-            throw new RuntimeException(e);
-        }
-
-        try {
+            debtor = (String) Parser.ParsingMoney(strings, command).get("name");
+            money = (BigDecimal) Parser.ParsingMoney(strings, command).get("amount");
             Calculus.AddDebt(debtor, creditor, money, chat, user, absSender, controller);
         } catch (Exception e) {
             sendExceptionMessage(e, absSender, chat);
         }
+
+
     }
     private void sendExceptionMessage(Exception e, AbsSender absSender, Chat chat){
         String whatHappened = e.getMessage();

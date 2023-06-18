@@ -239,4 +239,39 @@ public class DAO {
         return balanceList;
     }
 
+    public static boolean doesTableExist(String tablename) throws Exception{
+        String sqlIsTableExists = "show tables";
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+
+            try (Statement statement = conn.createStatement()) {
+                try (ResultSet rs = statement.executeQuery(sqlIsTableExists)) {
+                    while (rs.next()) {
+                        if(rs.getString(1).equals(tablename)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isTableEmpty(String table) throws Exception{
+        String sqlIsTableEmpty = "SELECT EXISTS (SELECT 1 FROM " + table + ")";
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+
+            try (Statement statement = conn.createStatement()) {
+                try (ResultSet rs = statement.executeQuery(sqlIsTableEmpty)) {
+                    if (rs.next()) {
+                        if(rs.getInt(1) == 0)
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

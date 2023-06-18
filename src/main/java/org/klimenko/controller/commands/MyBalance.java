@@ -9,8 +9,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class MyBalance extends BotCommand {
@@ -22,23 +20,38 @@ public class MyBalance extends BotCommand {
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String username = user.getUserName();
-        List<String> balance;
+        List<String> balances;
         String chatid = String.valueOf(chat.getId() > 0 ? chat.getId() : "m" + chat.getId() * (-1));
         try {
-            balance = Calculus.Balance(username, chatid);
-        } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
-                 InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        for (String balances : balance) {
-            SendMessage message = new SendMessage();
-            message.setChatId(chat.getId());
-            message.setText(balances);
-            try {
-                absSender.execute(message); // Call method to send the message
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            balances = Calculus.getBalances(username, chatid, chat);
+            for (String balance : balances) {
+                if (balances.isEmpty()) {
+                    balance = "YAY! You got no debts!";
+                }
+                SendMessage message = new SendMessage();
+                message.setChatId(chat.getId());
+                message.setText(balance);
+                try {
+                    absSender.execute(message); // Call method to send the message
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (Exception e) {
+            sendExceptionMessage(e, absSender, chat);
+        }
+
+    }
+
+    private void sendExceptionMessage(Exception e, AbsSender absSender, Chat chat) {
+        String whatHappened = e.getMessage();
+        SendMessage someException = new SendMessage();
+        someException.setChatId(chat.getId().toString());
+        someException.setText(whatHappened);
+        try {
+            absSender.execute(someException);
+        } catch (TelegramApiException f) {
+            System.out.println(f);
         }
     }
 }

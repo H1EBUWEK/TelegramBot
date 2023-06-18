@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 public class IPaidYou extends BotCommand {
     public IPaidYou() {
-        super("ipaidyou", "I paid my debts");
+        super("ipy", "I paid my debts");
     }
 
     @Override
@@ -23,20 +23,16 @@ public class IPaidYou extends BotCommand {
         String creditor;
         BigDecimal money;
         String debtor = user.getUserName();
+        String command = "/ipy";
 
         try {
-            creditor = (String) Parser.ParsingMoney(strings).get("name");
-            money = (BigDecimal) Parser.ParsingMoney(strings).get("amount");
-        } catch (Exception e) {
-            sendExceptionMessage(e, absSender, chat);
-            throw new RuntimeException(e);
-        }
-
-        try {
+            creditor = (String) Parser.ParsingMoney(strings, command).get("name");
+            money = (BigDecimal) Parser.ParsingMoney(strings, command).get("amount");
             Calculus.AddDebt(debtor, creditor, money, chat, user, absSender, controller);
         } catch (Exception e) {
             sendExceptionMessage(e, absSender, chat);
         }
+
     }
     private void sendExceptionMessage(Exception e, AbsSender absSender, Chat chat){
         String whatHappened = e.getMessage();

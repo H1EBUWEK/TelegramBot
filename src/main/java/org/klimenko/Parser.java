@@ -5,7 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Parser {
-    public static Map<String, Object> ParsingMoney(String[] strings) throws Exception {
+    public static Map<String, Object> ParsingMoney(String[] strings, String command) throws Exception {
+        if(strings.length<2){
+            throw new Exception("Not enough arguments. Usage:\n"+
+                    command + " @<id> <amount>");
+        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", " ");
         map.put("amount", " ");
