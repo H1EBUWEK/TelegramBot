@@ -2,7 +2,7 @@ Description
 TelegramBot is a Java-based chatbot that interacts with users on the Telegram messaging platform. It is designed to perform various tasks, provide information, and respond to user queries. The bot is powered by the Telegram Bot API and uses natural language processing techniques to understand user inputs.
 
 Features
-Interactive Chat: Adding bot to your chat to control debts with friends or colleages.
+Interactive Chat: Adding bot to your chat to control debts with friends or colleages.<br /> 
 Custom Commands: Implemented commands for debt, credit and balance. All information stored in DataBase.
 Inline Queries: Support inline queries to quickly respond to users' requests.
 Third-party Integration: Connect with external APIs to fetch data and provide more functionalities.
